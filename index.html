@@ -1,1 +1,140 @@
-Hello
+<!doctype html>
+<html lang="en"  ng-app="testAPP">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css"	href="components/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" 	href="components/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css"	href="css/AdminLTE.min.css">
+<script type="text/javascript" 	src="components/jquery/dist/jQuery-2.1.4.min.js"></script>
+<script type="text/javascript" 	src="components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/angular.min.js"></script>
+<script type="text/javascript" src="js/app.js"></script>
+<script type="text/javascript" src="js/drop-controller.js"></script>
+
+<style>
+#dropzone {
+	border: 2px dashed #ccc;
+	width: 300px;
+	height: 200px;
+}
+
+.upload-drop-zone {
+	height: 35px;
+	border-width: 2px;
+	margin-bottom: 20px;
+}
+
+/* skin.css Style*/
+.upload-drop-zone {
+	color: #ccc;
+	border-style: dashed;
+	border-color: #ccc;
+	line-height: 32px;
+	text-align: center
+}
+
+.upload-drop-zone.drop {
+	color: #222;
+	border-color: #222;
+}
+
+</style>
+</head>
+<body>
+   <div ng-controller="dropController">
+   <div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-default" style="height:100px">
+			<div class="panel-heading">
+				<strong>CSV DROP ZONE </strong>
+			<span class="pull-right" style="margin-top: -6px;" ng-if="csvFile!=''"><i class="fa fa-file-text-o fa-2x"
+					aria-hidden="true"></i>{{csvFile}}</span>	
+			</div>
+			<div class="panel-body">
+				<div class="upload-drop-zone" id="drop-zone">Drop CSV Files
+				<a href ng-click="getContents()" id="btnView" class="btn btn-primary pull-right">View Files</a>	
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	</div>
+<div class="row">	
+	<div class="col-md-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<strong>CSV DATA</strong>
+			</div>
+			<div class="panel-body" id="csvdataid" >
+				<div class="row" style="overflow-x:auto;">
+				<table class="table table-bordered" >
+					<tbody>
+						<tr>
+							<th ng-repeat="(k,v) in csvData.header">{{v}}</th>
+						</tr>
+						<tr ng-repeat="val in csvData.rowObj">
+							<td ng-repeat="(k,v) in val">{{v.v}}</td>
+						</tr>
+					</tbody>
+					</table>
+				</div>	
+			</div>
+		</div>
+	</div>
+		<div class="col-md-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<strong>CSV / DB COLUMN MAPPING</strong>
+			</div>
+			<div class="panel-body">
+				<div class="row">
+				<table class="table table-bordered">
+					<tbody>
+						<tr><th>CSV Columns</th></tr>
+						<tr ng-repeat="(k,v) in csvData.header">
+							<td>{{v}}
+							</td>
+							<td>
+							<select name="csvSelect{{$index}}" id="csvSelect{{$index}}"  class="form-control"
+								ng-model="selectedMap[$index]" ng-change="getMapValues($index,selectedMap[$index], v)">
+							    <option value="">SELECT COLUMN</option>
+								<option ng-repeat="val in dataFields"  value="{{val}}">
+           							{{val}}
+       							</option>
+							</select>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				</div>	
+				<!-- <div class="col-md-6">
+				<table class="table table-bordered">
+					<tbody>
+						<tr><th>DB Columns</th></tr>
+						<tr ng-repeat="val in dataFields">
+							<td>
+							<select name="dbSelect{{$index}}" id="dbSelect{{$index}}"  class="form-control"
+								ng-model="selectedMap[$index].dbCol" ng-change="getMapValues($index)">
+							    <option value="">SELECT COLUMN</option>
+								<option  ng-repeat="val in dataFields"  value="{{val}}">
+           							{{val}}
+       							</option>
+							</select>
+						   </td>
+						</tr>
+					</tbody>
+				</table>	
+				</div> -->
+			</div>
+			<div class="panel-footer">
+				<div class="row">
+					<a href ng-click="getCSVDBMap()" id="mapBtn" class="btn btn-primary pull-right">View Mapped Object</a>	
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	</div>
+</body>
+</html>
