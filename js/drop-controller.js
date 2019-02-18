@@ -2,7 +2,9 @@ testAPP.controller('dropController',
 		[
 				'$scope',
 				'$rootScope',
-	function($scope, $rootScope) {
+				'filterFilter',
+				'csvService',
+	function($scope, $rootScope, filterFilter, csvService) {
 		$scope.test = "hello";
 		$scope.csvFile = "";
 		var mobileView = 992;
@@ -15,6 +17,7 @@ testAPP.controller('dropController',
 		var mappedArray=[];
 		angular.element(document).ready(function() {
 			$scope.dataFields=["Firstname", "Middlename", "Lastname", "age", "salary", "address", "state", "city", "zip", "mobile", "email"];
+			 
 			var dropZone = document.getElementById('drop-zone');
 			dropZone.ondrop = function(e) {
 				e.preventDefault();
@@ -32,7 +35,27 @@ testAPP.controller('dropController',
 				return false;
 			}
 		});
+		
+		$scope.search = {};
 
+		$scope.resetFilters = function () {
+			// needs to be a function or it won't trigger a $watch
+			$scope.search = {};
+		};
+
+		// pagination controls
+		$scope.currentPage = 1;
+		$scope.entryLimit = 3; // items per page
+		
+
+		// $watch search to update pagination
+		$scope.$watch('search', function (newVal, oldVal) {
+			$scope.filtered = filterFilter($scope.csvData, newVal);
+			$scope.totalItems = $scope.filtered.length;
+			$scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
+			$scope.currentPage = 1;
+		}, true);
+		
 		$scope.startUpload = function(files) {
 			console.log(files);
 			console.log(files[0]);
@@ -46,40 +69,73 @@ testAPP.controller('dropController',
 			 var allTextLines = contents.split(/\r\n|\n/);
 			 var headers = allTextLines[0].split(',');
 			 $scope.csvHeaders=headers;
-			 $scope.csvContent = $scope.CSV2JSON(contents);
+			 $scope.csvData.header=headers;
+			 csvService.CSV2JSON(contents)
+			 .then(function(data){
+				 $scope.csvContent = data; 
+				 $scope.getContents();
+			 },function(data){
+				 console.log(data);
+			 });
+			
 		}
 
 		$scope.getContents = function() {
 			var csvObject= JSON.parse($scope.csvContent);
+			var dataObject=[];
 			$.each(csvObject, function(key, val) {
-				$scope.csvData.push(val);
+				var ob=[];
+				var a={};
+				for(k in val){
+					var obj={
+						i:k,
+						v:val[k]
+					};
+					console.log(obj);
+					ob.push(obj);
+				}
+				a=ob;
+				dataObject.push(a);
 			});
+			
+			$scope.csvData.rowObj=dataObject;
 			console.log($scope.csvData);
-			$('#csvdataid').attr("style","height: 456px");
-			  
+			$scope.totalItems = $scope.csvData.rowObj.length;
+			$scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
 		}
 		
-		$scope.getMapValues=function(indexPos){
-			console.log($scope.selectedMap);
-			console.log($scope.selectedCSV);
-			$.each( $scope.csvHeaders,function(key,val){
-				if(key==indexPos){
-				$scope.selectedCSV[key]=val;
-				return false;
+		$scope.populatedDataMap=function(indexPos, dbField, csvHeader){
+	/*			var checkDuplicate=false;
+				$.each(mappedArray,function(key,val){
+					if(dbField==val.dbColName){
+						checkDuplicate=true;
+	 				  	return false;
+					}
+				});
+				
+				if(checkDuplicate){
+					alert("This is already selected");
+					return false;
+				}else{
+					var isUpdate=false;
+					var selectedRow={
+							r:indexPos,
+							csvColName:csvHeader,
+							dbColName:dbField
+					}
+						$.each(mappedArray,function(key,val){
+							if(csvHeader==val.csvColName){
+								val.dbColName=dbField;
+								isUpdate=true;
+			 				  	return false;
+							}
+						});
+					if(!isUpdate){
+						mappedArray.push(selectedRow)
+					}
+						
 				}
-			});
-			var res = $scope.csvData.map(function(v, i) {
-				if(i==indexPos){
-				  var returnObj = {
-				    index: i,
-				    csvValue:v,
-				    dbHeader:$scope.selectedMap[indexPos].dbCol
-				  };
-				  mappedArray.push(returnObj)
-				  return mappedArray;
-				}
-			});
-			console.log(mappedArray);
+			console.log(mappedArray);*/
 		}
 
 		$scope.CSVToArray = function(strData, strDelimiter) {
