@@ -36,7 +36,7 @@ testAPP.controller('dropController',
 			}
 		});
 		  $scope.currentPage = 1;
-		  $scope.pageSize = 10;
+		  $scope.pageSize = 20;
 		
 		$scope.filterBy=function(filterValue){
 			$scope.search=filterValue;
@@ -44,7 +44,7 @@ testAPP.controller('dropController',
 		$scope.startUpload = function(files) {
 			console.log(files);
 			console.log(files[0]);
-			$scope.csvFile = files[0].name;
+			$scope.csvFile =  files[0].name.substr(0, files[0].name.lastIndexOf('.')).toUpperCase();
 			var reader = new FileReader();
 			reader.onload = $scope.getFileContents;
 			reader.readAsText(files[0]);
