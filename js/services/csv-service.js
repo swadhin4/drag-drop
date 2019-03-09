@@ -68,9 +68,9 @@ function CSVService($http,$q) {
 		}
 		var json = JSON.stringify(objArray);
 		var str = json.replace(/},/g, "},\r\n");
-		 var def = $q.defer();
-		 def.resolve(str);
-		 return def.promise;
+		var def = $q.defer();
+		def.resolve(str);
+		return def.promise;
     };
 	
 }

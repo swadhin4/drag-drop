@@ -10,7 +10,6 @@
 <script type="text/javascript" 	src="components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/angular.min.js"></script>
 <script type="text/javascript" src="components/angular-bootstrap/ui-bootstrap-tpls-0.10.0.js" ></script>
-<script type="text/javascript" src="js/paging.js" ></script>
 <script type="text/javascript" src="js/app.js"></script>
 <script type="text/javascript" src="js/drop-controller.js"></script>
 <script type="text/javascript" src="js/services/csv-service.js"></script>
@@ -40,11 +39,15 @@
 	color: #222;
 	border-color: #222;
 }
-.table-nowrap td {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 
+#viewport {
+  width: 200px;
+  height: 200px;
+  overflow-y: scroll;
+}
+
+#viewport table {
+  width: 100%;
 }
 body{
 background-color:#42383826
@@ -54,14 +57,6 @@ background-color:#42383826
     padding-left: 0;
     margin: 0px 0;
     border-radius: 4px;
-}
-
-.currentSelected{
-	background:rgba(60, 141, 188, 0.58);
-    color:#fff;
-}
-.currentSelected a{
-color:#fff
 }
 </style>
 </head>
@@ -96,58 +91,31 @@ color:#fff
             <div class="box-header with-border">
               <h3 class="box-title">CSV DATA</h3>
               <div class="box-tools pull-right">
-                	<div class="col-md-10">
-             	  		<input type="number" min="1" max="{{csvData.rowObj.length}}" class="form-control" ng-model="pageSize">
-             	 </div>
               </div>
             </div>
-            <div class="box-body ">
+            <div class="box-body">
               <div class="table-responsive" style="height:300px">
-              	<input type="text" ng-model="search"  class="form-control" placeholder="Search by any column" />
-                <table class="table table-condensed table-nowrap">
+              	<input type="text" ng-model="search" ng-change="filterBy(search)" class="form-control" placeholder="Search by any column" />
+              	 <div id="viewport" buffered-scroll="increaseLimit();" ng-init="limit=15;">
+                <table class="table no-margin">
                 	<tbody>
 						<tr>
 							<th ng-repeat="(k,v) in csvData.header">{{v}}</th>
 						</tr>
-						<!-- <tr ng-repeat="val in filtered = csvData.rowObj | filter:search | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit ">
-							<td ng-repeat="(k,v) in val.obj">{{v.v}}</td>
-						</tr> -->
-						
-						<tr dir-paginate="val in  csvData.rowObj | filter:search | itemsPerPage: pageSize" current-page="currentPage" 
-						ng-class="{'currentSelected': val.selected}" ng-click="selectRecord(val)">
+						<tr ng-repeat="val in csvData.rowObj  | limitTo: limit" >
 							<td ng-repeat="(k,v) in val.obj">{{v.v}}</td>
 						</tr>
 					</tbody>
                 </table>
+                </div>
               </div>
             </div>
-            <div class="box-footer clearfix" ng-if="csvData.rowObj.length>0">
-            	<div class="col-md-8">
-            		<!-- <pagination page="currentPage" max-size="noOfPages"  class="pagination"
-            		ng-model="currentPage"  total-items="totalItems" items-per-page="entryLimit" boundary-link-numbers="true" rotate="true" force-ellipses="true"></pagination> -->
-            	
-           			 <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)">
-           			 	<ul class="pagination" ng-if="1 < pages.length || !autoHide">
-    <li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == 1 }">
-        <a href="" ng-click="setCurrent(1)">&laquo;</a>
-    </li>
-    <li ng-if="directionLinks" ng-class="{ disabled : pagination.current == 1 }">
-        <a href="" ng-click="setCurrent(pagination.current - 1)">&lsaquo;</a>
-    </li>
-    <li ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }">
-        <a href="" ng-click="setCurrent(pageNumber)">{{ pageNumber }}</a>
-    </li>
-
-    <li ng-if="directionLinks" ng-class="{ disabled : pagination.current == pagination.last }">
-        <a href="" ng-click="setCurrent(pagination.current + 1)">&rsaquo;</a>
-    </li>
-    <li ng-if="boundaryLinks"  ng-class="{ disabled : pagination.current == pagination.last }">
-        <a href="" ng-click="setCurrent(pagination.last)">&raquo;</a>
-    </li>
-</ul>
-           			 </dir-pagination-controls>    
-				</div>
-				<div class="col-md-4">
+            <div class="box-footer clearfix">
+            	<!-- <div class="col-md-6">
+            		<pagination page="currentPage" max-size="noOfPages" 
+            		ng-model="currentPage"  total-items="totalItems" items-per-page="entryLimit" force-ellipses="true"></pagination>
+				</div> -->
+				<div class="col-md-6">
 					<a href  class="btn btn-primary pull-right">Total Records: {{csvData.rowObj.length}}</a>	
 				</div>
             </div>
@@ -164,13 +132,13 @@ color:#fff
 					<tbody>
 						<tr><th>CSV Columns</th><th>DB Columns</th></tr>
 						<tr ng-repeat="(k,v) in csvData.header">
-							<td>{{k}} {{v}}
+							<td>{{v}}
 							</td>
 							<td>
 							<select name="csvSelect{{$index}}" id="csvSelect{{$index}}"  class="form-control"
-								ng-model="selectedMap[$index]" ng-change="populatedDataMap($index,selectedMap[$index], v, k)">
+								ng-model="selectedMap[$index]" ng-change="populatedDataMap($index,selectedMap[$index], v)">
 							    <option value="">SELECT COLUMN</option>
-								<option ng-repeat="val in csvData.header"  value="{{val}}">
+								<option ng-repeat="val in dataFields"  value="{{val}}">
            							{{val}}
        							</option>
 							</select>

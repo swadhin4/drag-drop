@@ -1,4 +1,4 @@
-var testAPP = angular.module("testAPP", ['ui.bootstrap']);
+var testAPP = angular.module("testAPP", ['ui.bootstrap', 'angularUtils.directives.dirPagination']);
 
 testAPP.filter('startFrom', function () {
 	return function (input, start) {
@@ -9,6 +9,8 @@ testAPP.filter('startFrom', function () {
 		return [];
 	};
 });
+
+
 
 /*testAPP.config(['$stateProvider', '$urlRouterProvider',
     function($stateProvider, $urlRouterProvider) {
