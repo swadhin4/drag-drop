@@ -107,13 +107,21 @@ color:#fff
 							<td>{{v}}
 							</td>
 							<td>
-							<select name="csvSelect{{$index}}" id="csvSelect{{$index}}"  class="form-control"
-								ng-model="selectedMap[$index]" ng-change="populatedDataMap($index,selectedMap[$index], v, k)">
+							<select name="csvSelect{{$index}}" id="csvSelect{{$index}}"  class="form-control" ng-click="getCurrentVal($index)"
+								ng-model="selectedMap[$index]" ng-change="populatedDataMap($index,selectedMap[$index], k,v)">
 							    <option value="">Select Column</option>
 								<option ng-repeat="val in csvData.header"  value="{{val}}">
            							{{val}}
        							</option>
 							</select>
+							<!-- 	<select name="csvSelect{{$index}}" id="csvSelect{{$index}}" 
+								 class="form-control" ng-model="selectedMap[$index]" 
+								ng-change="toggleDBColsArray($index,selectedMap[$index], k,v)">
+								 <option value="">Select Column</option>
+								<option ng-repeat="val in csvData.header"  value="{{val}}">
+           							{{val}}
+       							</option>
+							   </select> -->
 							</td>
 						</tr>
 					</tbody>
@@ -160,8 +168,8 @@ color:#fff
                 </table>
               </div>
             </div>
-            <div class="box-footer clearfix" ng-if="csvData.rowObj.length>0">
-            	<div class="col-md-8">
+            <div class="box-footer clearfix" ">
+            	<div class="col-md-8" ng-if="csvData.rowObj.length>0">
             		<!-- <pagination page="currentPage" max-size="noOfPages"  class="pagination"
             		ng-model="currentPage"  total-items="totalItems" items-per-page="entryLimit" boundary-link-numbers="true" rotate="true" force-ellipses="true"></pagination> -->
             	
@@ -186,7 +194,7 @@ color:#fff
 </ul>
            			 </dir-pagination-controls>    
 				</div>
-				<div class="col-md-4">
+				<div class="col-md-4" ng-if="csvData.rowObj.length>0">
 					<a href  class="btn btn-primary pull-right">Total Records: {{csvData.rowObj.length}}</a>	
 				</div>
             </div>

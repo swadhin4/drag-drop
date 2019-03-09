@@ -17,7 +17,8 @@ testAPP.controller('dropController',
 		var mappedArray=[];
 		angular.element(document).ready(function() {
 			$scope.dataFields=[];
-			 
+			$scope.dbColsArray=[];
+			$scope.selectDbColsArray=[];
 			var dropZone = document.getElementById('drop-zone');
 			dropZone.ondrop = function(e) {
 				e.preventDefault();
@@ -88,6 +89,8 @@ testAPP.controller('dropController',
 			console.log($scope.csvData);
 			$scope.totalItems = $scope.csvData.rowObj.length;
 			$scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
+			
+			$scope.dbColsArray=$scope.csvData.header;
 		}
 		 $scope.pageChangeHandler = function(num) {
 		      console.log('meals page changed to ' + num);
@@ -99,7 +102,10 @@ testAPP.controller('dropController',
 			
 		}  
 		
-		$scope.populatedDataMap=function(dbColumnIndex, dbColumnVal, csvIndexVal, csvIndex){
+		$scope.getCurrentVal=function(selectedIndex){
+			$scope.oldTempDbCol = $('#csvSelect'+selectedIndex).val();
+		}
+		$scope.populatedDataMap=function(dbColumnIndex, dbColumnVal, csvIndex, csvIndexVal ){
 			var csvObject={
 					csvIndex:csvIndex,
 					csvVal:csvIndexVal,
@@ -108,23 +114,81 @@ testAPP.controller('dropController',
 					dbIndex:dbColumnIndex,
 					dbColVal:dbColumnVal
 			}
-			console.log(mappObject);
-			if(mappedArray.length==0){
-				mappedArray.push(mappObject);
-			}else{
-				for(var i=0;i<mappedArray.length;i++){
-					if(mappedArray[i].csvIndex==csvIndex){
-						if(mappedArray[i].csvVal!=dbColumnVal){
-							mappedArray.splice(i, 1);
+			$scope.csvDbMap={};
+			var isKeyExist=false;
+			var isValueExist=false;
+			var count= $scope.dataFields.length;
+			$.each($scope.dataFields,function(key,val){
+				console.log(key, val);
+				for(k in val){
+					if(k == "key"){
+						console.log(val[k])
+						if(val[k] == csvIndexVal){
+							isKeyExist=true;
+							//Updating value  
+								console.log(dbObject)
+								if($scope.checkDuplicateValue(dbObject)){
+									alert("DB Column already Mapped");
+									isValueExist=true;
+									$('#csvSelect'+csvIndex).val($scope.oldTempDbCol);
+								}else{
+								  val.value=dbObject.dbColVal;
+								}
 							break;
 						}
-						
 					}
+					
+					
 				}
-				
+			});
+			
+			if(count  == 0 || (count >0 && !isKeyExist) ){
+				$scope.csvDbMap.key=csvObject.csvVal;
+				//Adding value
+				$scope.csvDbMap.value=dbObject.dbColVal;
+				$scope.dataFields.push($scope.csvDbMap);
 			}
-			console.log(mappedArray);
+				
+			if(isValueExist){
+				return false;
+			}
+			console.log($scope.csvDbMap);
+			console.log($scope.dataFields);
 			
 		}
+		
+		$scope.checkDuplicateValue=function(dbObject){
+			var isValueExist=false;
+			$.each($scope.dataFields,function(key,val){
+				console.log(key, val);
+				for(k in val){
+					if(k == "value"){
+						console.log("DBValue :"+ val[k])
+						if(val[k] == dbObject.dbColVal){
+							isValueExist=true;
+							break;
+						}
+					}
+					
+				}
+			});
+			
+			if(isValueExist){
+				return true;
+			}else{
+				return false;
+			}
+		}
+		
+		$scope.toggleDBColsArray=function(i,s,k,v){
+			$scope.selectDbColsArray[k]=s;
+			/*var index = $scope.csvData.header.indexOf(s);
+			if (index > -1) {
+				$scope.csvData.header.splice(index, 1);
+			}*/
+			console.log(k, $scope.selectDbColsArray[k]);
+			console.log($scope.csvData.header);
+		}
+		
 		 
 } ]);
