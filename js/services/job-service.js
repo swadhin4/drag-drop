@@ -1,4 +1,4 @@
-angular.module('testAPP').service('jobService', ['$http', '$q', JobService]);
+angular.module('eatSafeApp').service('jobService', ['$http', '$q', JobService]);
 
 function JobService($http,$q) {
 		

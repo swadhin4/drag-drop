@@ -1,4 +1,4 @@
-angular.module('testAPP').service('csvService', ['$http', '$q', CSVService]);
+angular.module('eatSafeApp').service('csvService', ['$http', '$q', CSVService]);
 
 function CSVService($http,$q) {
 		
@@ -66,6 +66,7 @@ function CSVService($http,$q) {
 				objArray[i - 1][key] = array[i][k]
 			}
 		}
+		//var camelArray=this.toCamel(objArray)
 		var json = JSON.stringify(objArray);
 		var str = json.replace(/},/g, "},\r\n");
 		var def = $q.defer();
@@ -73,4 +74,28 @@ function CSVService($http,$q) {
 		return def.promise;
     };
 	
+   /* this.toCamel=function(o) {
+    	  var newO, origKey, newKey, value
+    	  if (o instanceof Array) {
+    	    return o.map(function(value) {
+    	        if (typeof value === "object") {
+    	          value = this.toCamel(value);
+    	        }
+    	        return value
+    	    })
+    	  } else {
+    	    newO = {}
+    	    for (origKey in o) {
+    	      if (o.hasOwnProperty(origKey)) {
+    	        newKey = (origKey.charAt(0).toLowerCase() + origKey.slice(1) || origKey).toString()
+    	        value = o[origKey]
+    	        if (value instanceof Array || (value !== null && value.constructor === Object)) {
+    	          value = this.toCamel(value);
+    	        }
+    	        newO[newKey] = value
+    	      }
+    	    }
+    	  }
+    	  return newO
+    	};*/
 }

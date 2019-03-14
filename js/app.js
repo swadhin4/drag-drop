@@ -1,6 +1,6 @@
-var testAPP = angular.module("testAPP", ['ui.bootstrap', 'angularUtils.directives.dirPagination']);
+var eatSafeApp = angular.module("eatSafeApp", ['ui.bootstrap', 'angularUtils.directives.dirPagination']);
 
-testAPP.filter('startFrom', function () {
+eatSafeApp.filter('startFrom', function () {
 	return function (input, start) {
 		if (input) {
 			start = +start;
