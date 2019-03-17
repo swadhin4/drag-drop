@@ -3,6 +3,7 @@ angular.module('eatSafeApp').service('eatSafeService', ['config','api','$http', 
 function EatSafeService(config, api, $http,$q) {
 		
 	this.saveCsvData = function(csvData, type){
+		console.log("Inside Save CSV Data "+ new Date())
 		var def = $q.defer();
 	    $http.post(api.saveEstablishment, csvData).success(function(data) {
 			def.resolve(data);
@@ -11,6 +12,7 @@ function EatSafeService(config, api, $http,$q) {
 			console.log(data)
 			def.reject(data);
 		});
+	    console.log("Exit Save CSV Data "+ new Date())
 		return def.promise;
     };
     
@@ -26,7 +28,7 @@ function EatSafeService(config, api, $http,$q) {
 		return def.promise;
     };
     
-    this.generatedMapData=function(csvDbMap){
+    this.saveMapData=function(csvDbMap){
     	var def = $q.defer();
     	$http.post(api.saveMapData, csvDbMap).success(function(data) {
 			def.resolve(data);

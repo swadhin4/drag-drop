@@ -111,8 +111,9 @@ eatSafeApp.controller('dropController',
 		}
 		
 		
-		$scope.saveCSVData=function(){
-			 console.log("Inside saveCSVData "+ new Date())
+		$scope.saveData=function(){
+			console.log();
+			console.log($scope.csvData.rowObj);
 			var finalArr=[];
 			$.each($scope.csvData.rowObj,function(key,val){
 				var establishment={};
@@ -121,10 +122,10 @@ eatSafeApp.controller('dropController',
 				});
 				finalArr.push(establishment)
 			});
+			console.log(finalArr);
 			$scope.dataLoaded=finalArr;
 			/*eatSafeService.saveCsvData(finalArr, "EST").then(function(response){
 				console.log(response);
-				 console.log("Exit saveCSVData "+ new Date())
 			},function(response){
 				console.log(response);
 			});*/
@@ -140,7 +141,6 @@ eatSafeApp.controller('dropController',
 		$scope.getCurrentVal=function(selectedIndex){
 			$scope.oldTempDbCol = $('#csvSelect'+selectedIndex).val();
 		}
-		var finalMappedArr=[];
 		$scope.populatedDataMap=function(dbColumnIndex, dbColumnVal, csvIndex, csvIndexVal ){
 			var csvObject={
 					csvIndex:csvIndex,
@@ -158,10 +158,12 @@ eatSafeApp.controller('dropController',
 				console.log(key, val);
 				for(k in val){
 					if(k == "csvcol"){
+						console.log(val[k])
 						if(val[k] == csvIndexVal){
 							isKeyExist=true;
 							//Updating value  
-								if(false){
+								console.log(dbObject)
+								if($scope.checkDuplicateValue(dbObject)){
 									alert("DB Column already Mapped");
 									isValueExist=true;
 									$('#csvSelect'+csvIndex).val($scope.oldTempDbCol);
@@ -169,7 +171,7 @@ eatSafeApp.controller('dropController',
 								}else{
 								  $('#csvSelect'+csvIndex).removeAttr("style");
 								  val.dbcol=dbObject.dbColVal;
-								  /* val.objvallist=[];
+								   val.objvallist=[];
 									$.each($scope.dataLoaded,function(key,val){
 										for(k in val){
 											if(k.toLowerCase() == csvIndexVal.toLowerCase()){
@@ -177,7 +179,7 @@ eatSafeApp.controller('dropController',
 												break;
 											}
 										}
-									});*/
+									});
 								}
 							break;
 						}
@@ -185,7 +187,7 @@ eatSafeApp.controller('dropController',
 				}
 			});
 			if(count  == 0 || (count >0 && !isKeyExist) ){
-				if(false){
+				if($scope.checkDuplicateValue(dbObject)){
 					alert("DB Column already Mapped");
 					isValueExist=true;
 					$('#csvSelect'+csvIndex).val($scope.oldTempDbCol);
@@ -210,8 +212,7 @@ eatSafeApp.controller('dropController',
 			if(isValueExist){
 				return false;
 			}
-				
-		//	console.log($scope.csvColDbColMap);
+			console.log($scope.csvColDbColMap);
 		}
 		
 		$scope.checkDuplicateValue=function(dbObject){
@@ -235,52 +236,18 @@ eatSafeApp.controller('dropController',
 			}
 		}
 		$scope.getCSVDBMap=function(){
-			 console.log("Inside getCSVDBMap "+ new Date())
-			$scope.saveData();
-			/* var mappedArray=[];
-				 for(var i=0;i<$scope.dataLoaded.length;i++){
-					 var colObject={};
-			 		 var arr=[];
-			 		 arr.push($scope.dataLoaded[i]);
-			 		 $.each($scope.csvColDbColMap,function(key,val){
-						 var ar=[];
-						 ar.push(val);
-						 var keyMapArr = alasql('SELECT csvcol,dbcol FROM ? ', [ar]);
-						 var valArr = alasql('SELECT '+keyMapArr[0].csvcol+' FROM ? ', [arr]);
-						 var mappedValue="";
-				 		 for(k in valArr[0]){
-				 			mappedValue=valArr[0][k];
-				 		 }
-				 		 colObject[keyMapArr[0].dbcol]=mappedValue;
-			 		 });
-					 mappedArray.push(colObject);
-				 }*/
-				 //console.log(mappedArray);
-				 var CsvDBColMapData={
-							dataType:"Establishment",
-							establishmentList:$scope.dataLoaded,
-							csvDbColsList:JSON.stringify(mappedArray)
-							
-					}
-				/* var CsvDBColMapData={
-							dataType:"Establishment",
-							//establishmentList:$scope.dataLoaded,
-							establishmentMappedList:mappedArray,
-							csvDbColsList:JSON.stringify(mappedArray)
-							
-					}*/
-			/*eatSafeService.generatedMapData(CsvDBColMapData).then(function(response){
+			var CsvDBColMapData={
+					dataType:"Establishment",
+					establishmentList:$scope.dataLoaded,
+					csvDbColsList:$scope.csvColDbColMap
+					
+			}
+			console.log(CsvDBColMapData)
+			eatSafeService.generatedMapData(CsvDBColMapData).then(function(response){
 				console.log(response);
 			},function(response){
 				console.log(response);
-			});*/
-				// console.log(CsvDBColMapData.establishmentMappedList)
-				 eatSafeService.saveMapData(CsvDBColMapData).then(function(response){
-						console.log(response);
-						
-					},function(response){
-						console.log(response);
-					});
+			});
 		}  
 		 
 } ]);

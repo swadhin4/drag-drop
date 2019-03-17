@@ -13,12 +13,14 @@
 <script type="text/javascript" src="js/angular.min.js"></script>
 <script type="text/javascript" src="components/angular-bootstrap/ui-bootstrap-tpls-0.10.0.js" ></script>
 <script type="text/javascript" src="js/paging.js" ></script>
+<script type="text/javascript" src="js/alasql@0.4.js"></script>
 <script type="text/javascript" src="js/app.js"></script>
 <script type="text/javascript" src="js/drop-controller.js"></script>
 <script type="text/javascript" src="js/services/csv-service.js"></script>
 <script type="text/javascript" src="js/services/eatsafe-service.js"></script>
 <script type="text/javascript" src="js/constants/constants.js"></script>
 <script type="text/javascript" src="js/jstorage.js"></script>
+
 </head>
 <body>
    <div ng-controller="dropController">
@@ -66,14 +68,6 @@
            							{{val}}
        							</option>
 							</select>
-							<!-- 	<select name="csvSelect{{$index}}" id="csvSelect{{$index}}" 
-								 class="form-control" ng-model="selectedMap[$index]" 
-								ng-change="toggleDBColsArray($index,selectedMap[$index], k,v)">
-								 <option value="">Select Column</option>
-								<option ng-repeat="val in csvData.header"  value="{{val}}">
-           							{{val}}
-       							</option>
-							   </select> -->
 							</td>
 						</tr>
 					</tbody>
@@ -150,12 +144,10 @@
 		</ul>
 		</dir-pagination-controls>
 	</div>
-	   <div class="col-md-4" >
-			<a href  class="btn btn-primary pull-right" ng-if="csvData.records>0">Total Records: {{csvData.records}}</a>	
+	   <div class="col-md-6" >
+			<a href  class="btn btn-primary pull-right" ng-if="csvData.records>0">Total Records: {{csvData.records}}</a>
+			<a href ng-click="saveCSVData()"  class="btn btn-primary pull-right">SAVE CSV DATA</a>		
 			<a href  class="btn btn-primary pull-right" ng-if="csvData.records==0">No Records available</a>
-		</div>
-		<div class="col-md-2" >
-			<a href  class="btn btn-primary pull-right" ng-click="saveData()">SAVE</a>	
 		</div>
          </div>
        </div>
