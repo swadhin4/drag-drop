@@ -124,12 +124,30 @@ eatSafeApp.controller('dropController',
 			});
 			console.log(finalArr);
 			$scope.dataLoaded=finalArr;
-			/*eatSafeService.saveCsvData(finalArr, "EST").then(function(response){
+		}
+		
+		
+
+		$scope.saveData=function(){
+			console.log("Inside saveData "+ new Date())
+			var finalArr=[];
+			$.each($scope.csvData.rowObj,function(key,val){
+				var establishment={};
+				$.each(val.obj,function(k,v){
+					establishment[$scope.finalMappedArr[k]]=v.v;
+				});
+				finalArr.push(establishment)
+			});
+			$scope.dataLoaded=finalArr;
+			console.log(finalArr);
+			eatSafeService.saveCsvData(finalArr, "EST").then(function(response){
 				console.log(response);
+				 console.log("Exit saveCSVData "+ new Date())
 			},function(response){
 				console.log(response);
-			});*/
+			});
 		}
+		
 		
 		 $scope.pageChangeHandler = function(num) {
 		      console.log('meals page changed to ' + num);
@@ -235,20 +253,65 @@ eatSafeApp.controller('dropController',
 				return false;
 			}
 		}
+		
 		$scope.getCSVDBMap=function(){
-			var CsvDBColMapData={
-					dataType:"Establishment",
-					establishmentList:$scope.dataLoaded,
-					csvDbColsList:$scope.csvColDbColMap
-					
-			}
-			console.log(CsvDBColMapData)
-			eatSafeService.generatedMapData(CsvDBColMapData).then(function(response){
-				console.log(response);
-			},function(response){
-				console.log(response);
-			});
+			 console.log("Inside getCSVDBMap "+ new Date())
+			$scope.saveData();
+			/* var mappedArray=[];
+				 for(var i=0;i<$scope.dataLoaded.length;i++){
+					 var colObject={};
+			 		 var arr=[];
+			 		 arr.push($scope.dataLoaded[i]);
+			 		 $.each($scope.csvColDbColMap,function(key,val){
+						 var ar=[];
+						 ar.push(val);
+						 var keyMapArr = alasql('SELECT csvcol,dbcol FROM ? ', [ar]);
+						 var valArr = alasql('SELECT '+keyMapArr[0].csvcol+' FROM ? ', [arr]);
+						 var mappedValue="";
+				 		 for(k in valArr[0]){
+				 			mappedValue=valArr[0][k];
+				 		 }
+				 		 colObject[keyMapArr[0].dbcol]=mappedValue;
+			 		 });
+					 mappedArray.push(colObject);
+				 }*/
+				 //console.log(mappedArray);
+				 var CsvDBColMapData={
+							dataType:"Establishment",
+							establishmentList:$scope.dataLoaded,
+							csvDbColsList:JSON.stringify($scope.csvColDbColMap)
+							
+					}
+				/* var CsvDBColMapData={
+							dataType:"Establishment",
+							//establishmentList:$scope.dataLoaded,
+							establishmentMappedList:mappedArray,
+							csvDbColsList:JSON.stringify(mappedArray)
+							
+					}*/
+				 console.log(CsvDBColMapData);
+				 eatSafeService.saveMapData(CsvDBColMapData).then(function(response){
+						console.log(response);
+						
+					},function(response){
+						console.log(response);
+					});
 		}  
 		 
+		$scope.finalMappedArr=[$scope.csvHeaders.length];
+		
+		$scope.populatedDataMap=function(dbColumnIndex, dbColumnVal, csvIndex, csvIndexVal ){
+			var index = $.inArray(dbColumnVal.toLowerCase(), $scope.finalMappedArr);
+			if(index == -1){
+				$('#mappedCol'+csvIndex).text(dbColumnVal);
+				$scope.finalMappedArr[$scope.csvHeaders.indexOf(csvIndexVal)]=$('#mappedCol'+csvIndex).text();
+			}
+			else{
+				$('#mappedCol'+csvIndex).text(dbColumnVal);
+				$scope.finalMappedArr[$scope.csvHeaders.indexOf(csvIndexVal)]=$('#mappedCol'+csvIndex).text();
+			}
+			$scope.checkDuplicateValue(csvIndexVal);
+			console.log($scope.finalMappedArr);
+		}
 } ]);
 

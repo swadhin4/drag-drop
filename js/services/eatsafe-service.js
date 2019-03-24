@@ -39,5 +39,17 @@ function EatSafeService(config, api, $http,$q) {
 		});
 		return def.promise;
     }
+    
+    this.getRestaurantData=function(dataType){
+    	var def = $q.defer();
+    	$http.post(api.getRestaurantData+"/"+dataType).success(function(data) {
+			def.resolve(data);
+		})
+		.error(function(data) {
+			console.log(data)
+			def.reject(data);
+		});
+		return def.promise;
+    }
 	
 }

@@ -20,10 +20,73 @@
 <script type="text/javascript" src="js/services/eatsafe-service.js"></script>
 <script type="text/javascript" src="js/constants/constants.js"></script>
 <script type="text/javascript" src="js/jstorage.js"></script>
-
+<style>
+.table-nowrap th td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.loader,
+      .loader:after {
+          border-radius: 50%;
+          width: 10em;
+          height: 10em;
+      }
+      .loader {            
+          margin: 250px auto;
+          font-size: 10px;
+          position: relative;
+          text-indent: -9999em;
+          border-top: 1.1em solid rgba(255, 255, 255, 0.2);
+          border-right: 1.1em solid rgba(255, 255, 255, 0.2);
+          border-bottom: 1.1em solid rgba(255, 255, 255, 0.2);
+          border-left: 1.1em solid #ffffff;
+          -webkit-transform: translateZ(0);
+          -ms-transform: translateZ(0);
+          transform: translateZ(0);
+          -webkit-animation: load8 1.1s infinite linear;
+          animation: load8 1.1s infinite linear;
+      }
+     @-webkit-keyframes load8 {
+         0% {
+             -webkit-transform: rotate(0deg);
+             transform: rotate(0deg);
+         }
+         100% {
+             -webkit-transform: rotate(360deg);
+             transform: rotate(360deg);
+         }
+     }
+     @keyframes load8 {
+         0% {
+             -webkit-transform: rotate(0deg);
+             transform: rotate(0deg);
+         }
+         100% {
+             -webkit-transform: rotate(360deg);
+             transform: rotate(360deg);
+         }
+     }
+        
+   #loadingDiv {
+            position:absolute;;
+            top: 0px;
+   			 left: 0px;
+            width:100%;
+            height:100%;
+            background-color:#000;
+              opacity: 0.7;
+  			 z-index: 9999;
+   				text-align: center;
+        }
+        .loader{
+        	background: url("/resources/img/loading.gif");
+        }
+</style>
 </head>
 <body>
    <div ng-controller="dropController">
+   <div style="display:none" id="loadingDiv"><div class="loader">Loading...</div></div>
    <div class="row">
    <div class="col-md-12">
 	<div class="col-md-3">
@@ -76,7 +139,7 @@
 			</div>
 			<div class="box-footer">
 				<div class="col-md-12">
-					<a href ng-click="getCSVDBMap()" id="mapBtn" class="btn btn-primary pull-right">View Mapped Object</a>	
+					<a href ng-click="saveMappedData()" id="mapBtn" class="btn btn-primary pull-right">Save</a>	
 				</div>
 			</div>
 		</div>
@@ -84,30 +147,36 @@
 	<div class="col-md-9">
 	 <div class="row">
 	 	<div class="col-md-12">
-		<div class="box box-info">
-            <div class="box-header with-border">
+	 	<div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#sourceTab" data-toggle="tab" aria-expanded="true">Source Data</a></li>
+           <!--    <li class=""><a href="#mappedTab" data-toggle="tab" aria-expanded="false">Mapped Data</a></li> -->
+              <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
+            </ul>
+            <div class="tab-content">
+             <div class="tab-pane active" id="sourceTab">
+			<div class="box box-info">
+             <div class="box-header with-border">
               <h3 class="box-title" ng-if="csvFile!=null">{{csvFile}}</h3>
                <h3 class="box-title" ng-if="csvFile==''">File Content</h3>
-              <div class="box-tools pull-right">
+               <div class="box-tools pull-right">
                 	<div class="pull-right">
              	  		<input type="number" min="1" max="{{csvData.rowObj.length}}" class="form-control" ng-model="pageSize">
              	 </div>
               </div>
             </div>
             <div class="box-body">
-              <div class="table-responsive" style="height:470px">
+              <div class="table-responsive" style="height:380px">
               	<input type="text" ng-model="search"  class="form-control" placeholder="Search by any column" />
-                <table class="table table-striped table-nowrap">
+                <table class="table table-bordered table-nowrap" cellpadding="10">
                 	<tbody>
+                	     <tr>
+							<th ng-repeat="(k,v) in csvData.header" id="mappedCol{{$index}}"></th>
+						</tr>
 						<tr>
 							<th ng-repeat="(k,v) in csvData.header">{{v}}</th>
 						</tr>
-						<!-- <tr ng-repeat="val in filtered = csvData.rowObj | filter:search | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit ">
-							<td ng-repeat="(k,v) in val.obj">{{v.v}}</td>
-						</tr> -->
-						
-						<tr dir-paginate="val in  csvData.rowObj | filter:search | itemsPerPage: pageSize" current-page="currentPage" 
-						ng-class="{'currentSelected': val.selected}" ng-click="selectRecord(val)">
+						<tr dir-paginate="val in  csvData.rowObj | filter:search | itemsPerPage: pageSize" current-page="currentPage">
 							<td ng-repeat="(k,v) in val.obj">{{v.v}}</td>
 						</tr>
 					</tbody>
@@ -146,12 +215,118 @@
 	</div>
 	   <div class="col-md-6" >
 			<a href  class="btn btn-primary pull-right" ng-if="csvData.records>0">Total Records: {{csvData.records}}</a>
-			<a href ng-click="saveCSVData()"  class="btn btn-primary pull-right">SAVE CSV DATA</a>		
 			<a href  class="btn btn-primary pull-right" ng-if="csvData.records==0">No Records available</a>
 		</div>
          </div>
        </div>
        </div>
+	        <!--       <div class="tab-pane" id="mappedTab">
+				<div class="box box-info">
+	             <div class="box-header with-border">
+	              <h3 class="box-title" ng-if="csvFile!=null">{{csvFile}}</h3>
+	               <h3 class="box-title" ng-if="csvFile==''">File Content</h3>
+	               <div class="box-tools pull-right">
+	                	<div class="pull-right">
+	             	  		<input type="number" min="1" max="{{csvData.rowObj.length}}" class="form-control" ng-model="pageSize">
+	             	 </div>
+	              </div>
+	            </div>
+	            <div class="box-body">
+	              <div class="table-responsive" style="height:380px">
+	              	<input type="text" ng-model="search"  class="form-control" placeholder="Search by any column" />
+	                <table class="table table-bordered table-nowrap" cellpadding="10">
+	                	<tbody>
+	                	     <tr>
+								<th ng-repeat="(k,v) in csvData.header" id="mappedCol{{$index}}"></th>
+							</tr>
+							<tr>
+								<th ng-repeat="(k,v) in csvData.header">{{v}}</th>
+							</tr>
+							<tr dir-paginate="val in  csvData.rowObj | filter:search | itemsPerPage: pageSize" current-page="currentPage">
+								<td ng-repeat="(k,v) in val.obj">{{v.v}}</td>
+							</tr>
+						</tbody>
+	                </table>
+	              </div>
+	            </div>
+	            <div class="box-footer clearfix" ">
+		<div class="col-md-6" >
+			<dir-pagination-controls boundary-links="true"
+				on-page-change="pageChangeHandler(newPageNumber)" ng-if="csvData.rowObj.length>0">
+			<ul class="pagination" ng-if="1 < pages.length || !autoHide">
+				<li ng-if="boundaryLinks"
+					ng-class="{ disabled : pagination.current == 1 }"><a
+					href="" ng-click="setCurrent(1)">&laquo;</a></li>
+				<li ng-if="directionLinks"
+					ng-class="{ disabled : pagination.current == 1 }"><a
+					href="" ng-click="setCurrent(pagination.current - 1)">&lsaquo;</a>
+				</li>
+				<li
+					ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)"
+					ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }">
+					<a href="" ng-click="setCurrent(pageNumber)">{{
+						pageNumber }}</a>
+				</li>
+	
+				<li ng-if="directionLinks"
+					ng-class="{ disabled : pagination.current == pagination.last }">
+					<a href="" ng-click="setCurrent(pagination.current + 1)">&rsaquo;</a>
+				</li>
+				<li ng-if="boundaryLinks"
+					ng-class="{ disabled : pagination.current == pagination.last }">
+					<a href="" ng-click="setCurrent(pagination.last)">&raquo;</a>
+				</li>
+			</ul>
+			</dir-pagination-controls>
+		</div>
+		   <div class="col-md-6" >
+				<a href  class="btn btn-primary pull-right" ng-if="csvData.records>0">Total Records: {{csvData.records}}</a>
+				<a href  class="btn btn-primary pull-right" ng-if="csvData.records==0">No Records available</a>
+			</div>
+	         </div>
+	       </div>
+	       </div> -->
+       </div>
+       </div>
+	</div>
+	</div>
+	 <div class="modal modal-success fade" id="modal-success" style="display:none;">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span></button>
+                <h4 class="modal-title">Success</h4>
+              </div>
+              <div class="modal-body">
+                <p>{{successMsg}}</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal" id="successBtnClose">Close</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+       </div>
+        <div class="modal modal-danger fade " id="modal-danger" style="display:none">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span></button>
+                <h4 class="modal-title">Error</h4>
+              </div>
+              <div class="modal-body">
+               <p>{{errorMsg}}</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal" id="errorBtnClose">Close</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
        </div>
 	</div>
 	</div>
