@@ -1,0 +1,254 @@
+	<style>
+	
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: 34px;
+  float:left;
+}
+
+/* Hide default HTML checkbox */
+.switch input {display:none;}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+      height: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+ height: 26px; 
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input.default:checked + .slider {
+  background-color: #444;
+}
+input.primary:checked + .slider {
+  background-color: #2196F3;
+}
+input.success:checked + .slider {
+  background-color: #8bc34a;
+}
+input.info:checked + .slider {
+  background-color: #3de0f5;
+}
+input.warning:checked + .slider {
+  background-color: #FFC107;
+}
+input.danger:checked + .slider {
+  background-color: #f44336;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+	</style>
+	<div ng-controller="InspectionController">
+	<div class="col-md-3">
+		<div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">CSV DROP ZONE</h3>
+            </div>
+			 <div class="box-body">
+			  <strong><i class="fa fa-book margin-r-5"></i> Select Information Type</strong>
+			    <select type="dataselect" name="dataselect" ng-model="selectedOption" class="form-control" ng-change="getOptionSelection(selectedOption)">
+               <option value="" selected>Choose your Option</option>
+               <option value="establishment" >Establishment</option>
+               <option value="inspection">Inspection</option>
+               </select>
+				<div class="upload-drop-zone" id="drop-zone" ng-model="files">Drop CSV Files
+				</div>
+			</div>
+			<div class="box-footer">
+				 <div class="col-md-4">
+					<span class="badge"></span>
+				</div>
+			</div>
+		</div>
+		<div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Search Criteria</h3>
+            </div>
+            <div class="box-body">
+              <strong><i class="fa fa-book margin-r-5"></i> Select States</strong>
+               <select type="select" id="stateselect" name="stateselect" ng-model="selectedStateOption" 
+				  class="form-control" ng-change="getStateSelection(selectedStateOption)">
+                 </select>
+              <strong><i class="fa fa-map-marker margin-r-5"></i> Select Establishment</strong>
+			 	<select type="select" name="establishmentselect" id="establishmentselect" 
+				 	ng-model="selectedEstablishmentsOption" 
+				 class="form-control" ng-change="getEstablishmentSelection(selectedEstablishmentsOption)">
+                 </select>
+              	<p class="text-muted">{{establishments.selected.address}}</p>
+              	<p class="text-muted">{{establishments.selected.owner}}</p>
+			  <strong ng-if="establishments.selected.id!=null"><i class="fa fa-pencil margin-r-5" ></i>Establishment Type</strong>
+				<p ng-if="establishments.selected.id!=null">
+                <span class="label label-info">{{establishments.selected.typeDesc}}</span>
+                <span class="label label-success">Status: {{establishments.selected.status}}</span>
+               </p>
+              <a href="#" class="btn btn-primary btn-block" ng-if="establishments.selected.id!=null"><b>GENERATE</b></a>
+            </div>
+            <!-- /.box-body -->
+          </div>
+	</div>
+		<div class="col-md-3" >
+          <div class="box box-primary">
+            <div class="box-header with-border">
+             <div class="col-md-12  text-center">
+             <label for="exampleInputFile" style="font-size:1.8em;color:#cdd2d6">Food Facility Inspection Report</label>
+             </div>
+            </div>
+              <div class="box-body">
+               <strong><i class="fa fa-book margin-r-5"></i> Food Facility</strong>
+               <p class="help-block">{{establishments.selected.name}}</p>
+               <hr>
+               <strong><i class="fa fa-map-marker margin-r-5"></i> Address</strong>
+               <p class="help-block">{{establishments.selected.address}}</p>
+               <hr>
+                 <strong><i class="fa fa-book margin-r-5"></i> Telephone</strong>
+               <p class="help-block">{{establishments.selected.phone}}</p>
+               <hr>
+                 <strong><i class="fa fa-book margin-r-5"></i> Establishment Type</strong>
+               <p class="help-block">{{establishments.selected.typeDesc}}</p>
+               <hr>
+                  <strong><i class="fa fa-book margin-r-5"></i> District</strong>
+               <p class="help-block">{{establishments.selected.typeDesc}}</p>
+              
+                  <strong><i class="fa fa-book margin-r-5"></i> Sub</strong>
+               <p class="help-block">{{establishments.selected.typeDesc}}</p>
+                <hr>
+                   	<strong><i class="fa fa-book margin-r-5"></i> Licensee</strong>
+               <p class="help-block">{{establishments.selected.typeDesc}}</p>
+                <hr>
+               	<strong><i class="fa fa-book margin-r-5"></i> Corporate Officer</strong>
+               <p class="help-block">{{establishments.selected.typeDesc}}</p>
+                <hr>
+              <strong><i class="fa fa-book margin-r-5"></i> Purpose of Inspection</strong>
+               <p class="help-block">{{establishments.selected.typeDesc}}</p>
+                <hr>
+                 <strong><i class="fa fa-book margin-r-5"></i> Inspection Type</strong>
+               <p class="help-block">{{establishments.selected.typeDesc}}</p>
+                <hr>
+                </div>
+                 <div class="box-footer">
+                 <a href="#" class="btn btn-primary btn-block" ><b>Next</b></a>
+                 </div>
+                </div>
+                </div>
+                <div class="col-md-6" >
+                 <div class="box box-primary">
+            <div class="box-header">
+              <div class="row">
+                <div class="text-center">
+                  <label for="exampleInputFile" style="font-size:1.8em;color:#cdd2d6">FOODBORNE ILLNESS RISK FACTORS AND PUBLIC HEALTH INTERVENTIONS</label>
+                </div>
+                </div>
+                 <div class="row">
+                <div class="col-xs-2 col-md-2 text-center">
+                  <label for="exampleInputFile">
+                  IN=in compliance</label>
+                </div>
+                <div class="col-xs-2 col-md-2 text-center">
+                  <label for="exampleInputFile">
+                  OUT=Not in compliance</label>
+                </div>
+                <div class="col-xs-2 col-md-2 text-center">
+                  <label for="exampleInputFile">
+                  N/O=Not Observed</label>
+                </div>
+                <div class="col-xs-2 col-md-2 text-center">
+                  <label for="exampleInputFile">
+                  N/A=Not Applicable</label>
+                </div>
+                <div class="col-xs-2 col-md-2 text-center">
+                  <label for="exampleInputFile">
+                  COS=Corrected onsite during inspection</label>
+                </div>
+                <div class="col-xs-2 col-md-2 text-center">
+                  <label for="exampleInputFile">
+                  R=Repeat Violation</label>
+                </div>
+                </div>
+            </div>
+            <div class="box-body no-padding">
+            <div class="col-xs-12 col-md-12">
+            <!-- <div class="box box-widget widget-user-2" ng-repeat="rule in inspectionData">
+            <div class="widget-user-header bg-yellow" >
+              <h3 class="widget-user-username">{{rule.name}}</h3>
+            </div>
+            <div class="box-footer no-padding" ng-repeat="val in rule.values">
+              <ul class="nav nav-stacked">
+                <li><a href="#">{{val.row}}</a></li>
+              </ul>
+            </div>
+          </div> -->
+              <table class="table ">
+                <tbody>
+                 <tr>
+                  <th style="width: 10px">#</th>
+                  <th></th>
+                  <th>Compliance Status</th>
+                  <th>COS</th>
+                  <th>R</th>
+                </tr>
+                </tbody>
+                <tbody ng-repeat="rule in inspectionData">
+                <tr>
+                  <th colspan="3" class="text-center">{{rule.name}}</th>
+                </tr>
+                <tr ng-repeat="val in rule.values">
+                  <th>{{val.index}}</th><th>IN</th><td>{{val.row}}</td><th> 
+                  <div class="switch">
+				  <label>
+				    <input type="checkbox" checked>
+				    <span class="lever"></span> 
+				  </label>
+				</div></th>
+				<th> <div class="switch">
+				  <label>
+				    <input type="checkbox" checked>
+				    <span class="lever"></span> 
+				  </label>
+				</div></th>
+                </tr>
+              </tbody>
+              </table>
+            </div>
+          </div>
+          </div>
+        </div>
+        </div>

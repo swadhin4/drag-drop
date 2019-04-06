@@ -1,0 +1,185 @@
+  <style>
+  .pagination li{
+  font-size: .9rem;
+    padding: 0 0px;
+  }
+  
+  </style>
+  
+   <div ng-controller="EstablishmentController">
+   <div style="display:none" id="loadingDiv"><div class="loader">Loading...</div></div>
+   <div class="row">
+   <div class="col-md-12">
+	<div class="col-md-3">
+			<div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">CSV DROP ZONE</h3>
+            </div>
+			 <div class="box-body">
+			  <strong><i class="fa fa-book margin-r-5"></i> Select Information Type</strong>
+			    <select type="dataselect" name="dataselect" ng-model="selectedOption" class="form-control" ng-change="getOptionSelection(selectedOption)">
+               <option value="" selected>Choose your Option</option>
+               <option value="establishment" >Establishment</option>
+               <option value="inspection">Inspection</option>
+               </select>
+               <hr>
+				<div class="upload-drop-zone" id="drop-zone" ng-model="files">Drop CSV Files
+				</div>
+			</div>
+			<div class="box-footer">
+				 <div class="col-md-4">
+					<span class="badge"></span>
+				</div>
+			</div>
+		</div>
+		<div class="box box-info">
+            <div class="box-header with-border">
+				<strong>CSV - DB COLUMN MAPPING</strong>
+			</div>
+			<div class="box-body">
+				<div class="table-responsive" style="height:230px">
+				<table class="table table-striped">
+					<tbody>
+						<tr><th>CSV Columns</th><th>DB Columns</th></tr>
+						<tr ng-repeat="(k,v) in csvData.header">
+							<td>{{v}}
+							</td>
+							<td>
+							<select name="csvSelect{{$index}}" id="csvSelect{{$index}}"  class="form-control" ng-click="getCurrentVal($index)"
+								ng-model="selectedMap[$index]" ng-change="populatedDataMap($index,selectedMap[$index], k,v)">
+							    <option value="">Select Column</option>
+								<option ng-repeat="val in dbColsArray"  value="{{val}}">
+           							{{val}}
+       							</option>
+							</select>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				</div>	
+			</div>
+			<div class="box-footer">
+				<div class="col-md-12">
+					<a href ng-click="saveMappedData()" id="mapBtn" class="btn btn-primary pull-right">Save</a>	
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-9">
+	 <div class="box box-primary">
+            <div class="box-header with-border">
+             <h3 class="box-title" ng-if="csvFile!=null">{{csvFile}}</h3>
+               <h3 class="box-title" ng-if="csvFile==''">File Content</h3>
+               <div class="box-tools pull-right">
+                	<div class="pull-right">
+             	  		<input type="number" min="1" max="{{csvData.rowObj.length}}" class="form-control" ng-model="pageSize">
+             	    </div>
+              </div>
+              </div>
+		 <!-- 	<div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#sourceTab" data-toggle="tab" aria-expanded="true">Source Data</a></li>
+              <li class=""><a href="#mappedTab" data-toggle="tab" aria-expanded="false">Mapped Data</a></li>
+              <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
+            </ul>
+            <div class="tab-content">
+             <div class="tab-pane active" id="sourceTab">
+            </div> -->
+            <div class="box-body">
+              <div class="table-responsive" style="height:450px">
+              	<input type="text" ng-model="search"  class="form-control" placeholder="Search by any column" />
+                <table class="table table-nowrap" cellpadding="10">
+                	<tbody>
+                	     <tr style="display:none">
+							<th ng-repeat="(k,v) in csvData.header" id="mappedCol{{$index}}"></th>
+						</tr>
+						<tr>
+							<th ng-repeat="(k,v) in csvData.header">{{v}}</th>
+						</tr>
+						<tr dir-paginate="val in  csvData.rowObj | filter:search | itemsPerPage: pageSize" current-page="currentPage">
+							<td ng-repeat="(k,v) in val.obj">{{v.v}}</td>
+						</tr>
+					</tbody>
+                </table>
+              </div>
+            </div>
+            <div class="box-footer clearfix" ">
+	<div class="col-md-6" >
+		<dir-pagination-controls boundary-links="true"
+			on-page-change="pageChangeHandler(newPageNumber)" ng-if="csvData.rowObj.length>0">
+		<ul class="pagination" ng-if="1 < pages.length || !autoHide" style="    margin-top: 0.5rem;">
+			<li ng-if="boundaryLinks"
+				ng-class="{ disabled : pagination.current == 1 }"><a
+				href="" ng-click="setCurrent(1)">&laquo;</a></li>
+			<li ng-if="directionLinks"
+				ng-class="{ disabled : pagination.current == 1 }"><a
+				href="" ng-click="setCurrent(pagination.current - 1)">&lsaquo;</a>
+			</li>
+			<li
+				ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)"
+				ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }">
+				<a href="" ng-click="setCurrent(pageNumber)">{{
+					pageNumber }}</a>
+			</li>
+
+			<li ng-if="directionLinks"
+				ng-class="{ disabled : pagination.current == pagination.last }">
+				<a href="" ng-click="setCurrent(pagination.current + 1)">&rsaquo;</a>
+			</li>
+			<li ng-if="boundaryLinks"
+				ng-class="{ disabled : pagination.current == pagination.last }">
+				<a href="" ng-click="setCurrent(pagination.last)">&raquo;</a>
+			</li>
+		</ul>
+		</dir-pagination-controls>
+	</div>
+	   <div class="col-md-6" >
+			<a href  class="btn btn-primary pull-right" ng-if="csvData.records>0">Total Records: {{csvData.records}}</a>
+			<a href  class="btn btn-primary pull-right" ng-if="csvData.records==0">No Records available</a>
+		</div>
+         </div>
+       </div>
+	        
+       </div>
+       </div>
+	</div>
+	 <div class="modal modal-success fade" id="modal-success" style="display:none;">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span></button>
+                <h4 class="modal-title">Success</h4>
+              </div>
+              <div class="modal-body">
+                <p>{{successMsg}}</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal" id="successBtnClose">Close</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+       </div>
+        <div class="modal modal-danger fade " id="modal-danger" style="display:none">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span></button>
+                <h4 class="modal-title">Error</h4>
+              </div>
+              <div class="modal-body">
+               <p>{{errorMsg}}</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal" id="errorBtnClose">Close</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+       </div>
+	</div>
+	

@@ -1,0 +1,76 @@
+[{
+rule1:"Demonstration of Knowledge",
+values:[
+		  {
+			  row1:"Certification by accredited program, compliance with Code,or correct responses"
+		  }  
+     ]
+},
+{
+ rule2:"Employee Health",
+ values:[
+		  {
+			  row1:"Management awareness; policy present"
+		  },
+		  {
+			  row2:"Proper use of reporting; restriction & exclusion"
+		  },
+			
+    ]
+},   
+{   
+rule3:"Good Hygienic Practices",
+values:[
+		  {
+			  row1:"Proper eating, tasting, drinking, or tobacco use"
+		  },
+		  {
+			  row2:"No discharge from eyes, nose, and mouth"
+		  },
+]
+},
+{
+rule3:"Preventing Contamination by Hazards",
+values:[
+		  {
+			  row1:"Hands clean & properly washed"
+		  },
+		  {
+			  row2:"No bare hand contact with RTE foods or approved alternate method properly followed"
+		  },
+		  {
+			  row3:"Adequate handwashing facilities supplied & accessible"
+		  },
+    ]
+},
+{
+rule4:"Approved Source",
+values:[
+		  {
+			  row1:"Food obtained from approved source"
+		  },
+		  {
+			  row2:"Food received at proper temperature"
+		  },
+		  {
+			  row3:"Food in good condition, safe, & unadulterated"
+		  },
+		  {
+			  row4:"Required records available: shellstock tags, parasite destruction"
+		  }
+    ]
+ },
+ {   
+rule5:"Protection From Contamination",
+values:[
+		  {
+			  row1:"Food separated & protected"
+		  },
+		  {
+			  row2:"Food contact surfaces: cleaned & sanitized"
+		  },
+		  {
+			  row3:"Proper disposition of returned, previously served,reconditioned, & unsafe food"
+		  }
+    ]	
+}]			  

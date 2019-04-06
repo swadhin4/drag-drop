@@ -1,6 +1,6 @@
-var eatSafeApp = angular.module("eatSafeApp", ['ui.bootstrap', 'angularUtils.directives.dirPagination']);
+var eatSafeModule = angular.module("eatSafeApp", ['ui.bootstrap','ui.router', 'angularUtils.directives.dirPagination']);
 
-eatSafeApp.filter('startFrom', function () {
+eatSafeModule.filter('startFrom', function () {
 	return function (input, start) {
 		if (input) {
 			start = +start;
@@ -11,8 +11,7 @@ eatSafeApp.filter('startFrom', function () {
 });
 
 
-
-/*testAPP.config(['$stateProvider', '$urlRouterProvider',
+eatSafeModule.config(['$stateProvider', '$urlRouterProvider',
     function($stateProvider, $urlRouterProvider) {
 
         // For unmatched routes
@@ -22,12 +21,30 @@ eatSafeApp.filter('startFrom', function () {
         $stateProvider
             .state('index', {
                 url: '/',
-                templateUrl: 'templates/dashboard.html'
+                templateUrl: 'templates/login.html'
             })
-			.state('files', {
-                url: '/jobs',
-                templateUrl: 'templates/job-dashboard.html'
+            /*.state('sidemenu',{
+			  url:'/sidemenu',
+			  //abstract: true,
+			  templateUrl:'templates/sidemenu.html',
+			  controller:'SidemenuController'
+			})
+			 .state('sidemenu.establishment', {
+			  url: '/establishment',
+			  views: {
+			    'menuContent': {
+			      templateUrl: 'templates/establishment.html',
+			      controller: 'EstablishmentController'
+			    }
+			  }
+			 })*/
+            .state('est', {
+                url: '/est',
+                templateUrl: 'templates/establishment.html'
+            })
+            .state('inspection', {
+                url: '/inspection',
+                templateUrl: 'templates/inspection-form.html'
             });
-           
     }
-]);*/
+]);
