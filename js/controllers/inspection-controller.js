@@ -47,6 +47,7 @@ function InspectionController($scope,$state, eatSafeService, dataService) {
 			$state.go('est', $state.current, {}, {reload: true});
 		}else{
 			$scope.getUSStates();
+			 $scope.getInspectionForm();
 		}
 	}
     
@@ -59,7 +60,7 @@ function InspectionController($scope,$state, eatSafeService, dataService) {
     	$.each($scope.establishments.list,function(k,v){
     		if(parseInt(optionSelected) == v.id){
     			$scope.establishments.selected=v;
-    			 $scope.getInspectionForm();
+    			// $scope.getInspectionForm();
     			return false;
     		}
     	});
