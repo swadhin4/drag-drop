@@ -1,205 +1,159 @@
-
-<link rel="stylesheet" type="text/css"
-	href="components/bootstrap/dist/css/bootstrap.min.css">
 <style>
-label {
-	padding-left: 16px;
-	display: inline-block;
-	height: 39px;
-	line-height: 37px;
+:root { -
+	-input-padding-x: 1.5rem; -
+	-input-padding-y: .75rem;
 }
 
-.nav>li>a {
-	position: relative;
-	display: block;
-	padding: 27px 35px;
+
+.card-signin {
+	border: 0;
+	border-radius: 0rem;
+	box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
 }
 
-.nav {
-	display: flex;
-	flex-wrap: inherit;
+.card-signin .card-title {
+	margin-bottom: 2rem;
+	font-weight: 300;
+	font-size: 1.5rem;
 }
 
-.checkbox label, .radio label {
-	min-height: 20px;
-	padding-left: 0px;
-	margin-bottom: 0;
-	font-weight: 400;
-	cursor: pointer;
+.card-signin .card-body {
+	padding: 2rem;
 }
 
-/* The switch - the box around the slider */
-.switch {
-	position: relative;
-	display: inline-block;
+.form-signin {
 	width: 100%;
-	height: 34px;
-	float: left;
 }
 
-/* Hide default HTML checkbox */
-.switch input {
-	display: none;
+.form-signin .btn {
+	font-size: 80%;
+	border-radius: 5rem;
+	letter-spacing: .1rem;
+	font-weight: bold;
+	padding: 1rem;
+	transition: all 0.2s;
 }
 
-/* The slider */
-.slider {
+.form-label-group {
+	position: relative;
+	margin-bottom: 1rem;
+}
+
+.form-label-group input {
+	height: auto;
+	/*  border-radius: 2rem; */
+	padding-top: 22px
+}
+
+/* .form-label-group>input,
+.form-label-group>label {
+  padding-left: 15px;
+  padding-right: 15px;
+} */
+.form-label-group>label {
 	position: absolute;
-	cursor: pointer;
 	top: 0;
 	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: #ccc;
-	-webkit-transition: .4s;
-	transition: .4s;
-	height: 34px;
-	width: 54% !important;
+	display: block;
+	width: 100%;
+	margin-bottom: 0;
+	/* Override default `<label>` margin */
+	line-height: 1.5;
+	color: #e4e8ec;
+	border: 1px solid transparent;
+	border-radius: .25rem;
+	transition: all .1s ease-in-out;
 }
 
-.slider:before {
-	position: absolute;
-	content: "";
-	height: 26px;
-	width: 26px;
-	left: 4px;
-	bottom: 4px;
-	background-color: white;
-	-webkit-transition: .4s;
-	transition: .4s;
+.form-label-group input::-webkit-input-placeholder {
+	color: transparent;
 }
 
-.col-md-3, .col-md-4, .col-md-6, .col-md-8, .col-md-9 .col-md-12 {
-	padding-right: 0px;
-	padding-left: 0px;
+.form-label-group input:-ms-input-placeholder {
+	color: transparent;
 }
 
-input.default:checked+.slider {
-	background-color: #444;
+.form-label-group input::-ms-input-placeholder {
+	color: transparent;
 }
 
-input.primary:checked+.slider {
-	background-color: #2196F3;
+.form-label-group input::-moz-placeholder {
+	color: transparent;
 }
 
-input.success:checked+.slider {
-	background-color: #8bc34a;
+.form-label-group input::placeholder {
+	color: transparent;
 }
 
-input.info:checked+.slider {
-	background-color: #3de0f5;
+.btn-google {
+	color: white;
+	background-color: #ea4335;
 }
 
-input.warning:checked+.slider {
-	background-color: #FFC107;
+.btn-facebook {
+	color: white;
+	background-color: #3b5998;
 }
 
-input.danger:checked+.slider {
-	background-color: #f44336;
-}
-
-input:focus+.slider {
-	box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked+.slider:before {
-	-webkit-transform: translateX(26px);
-	-ms-transform: translateX(26px);
-	transform: translateX(26px);
-}
-
-/* Rounded sliders */
-.slider.round {
-	border-radius: 34px;
-}
-
-.slider.round:before {
-	border-radius: 50%;
-}
-
-.list-group {
-	background-color: #fff
-}
-
-.list-group-unbordered>.list-group-item {
-	border-left: 0;
-	border-right: 0;
-	border-radius: 0;
-	padding-left: 5px !important;
-	padding-right: 5px !important;
-}
-
-.modal {
-	display: none;
-	position: fixed;
-	left: 0;
-	right: 0;
-	background-color: #fafafa00;
-	padding-right: 0px;
-	margin: auto;
-	overflow-y: auto;
+.btn, .btn-large, .btn-flat {
+	border: none;
 	border-radius: 2px;
-	will-change: top, opacity;
-	width: 100%
-}
-
-.modal .modal-content {
-	padding: 10px;
-}
-
-[type="checkbox"]+label {
-	position: relative;
-	padding-left: 24px;
-	cursor: pointer;
 	display: inline-block;
-	/* height: 49px; */
-	line-height: 20px;
-	font-size: 1.5rem;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-khtml-user-select: none;
-	-ms-user-select: none;
-}
-
-.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th,
-	.table>thead>tr>td, .table>thead>tr>th {
-	padding: 8px;
-	/* line-height: 1.42857143; */
+	height: 36px;
+	outline: 0;
+	padding: 0 2rem;
+	text-transform: uppercase;
 	vertical-align: middle;
-	border-top: 0px solid #ddd;
+	-webkit-tap-highlight-color: transparent;
 }
 
-.btn-group .btn-fab {
-	position: fixed !important;
-	right: 20px;
+nav {
+	color: #444;
+	background-color: #fff;
 }
 
-.col-md-3, .col-md-4, .col-md-6, .col-md-8, .col-md-9 .col-md-12 {
-	padding-right: 0px !important;
-	padding-left: 0px !important;
+.card {
+	border-radius: 0px;
+	    margin: 1.5rem 0 1rem 0;
 }
+
+.btn-success {
+	color: #fff;
+	background-color: #41b55f;
+}
+
+.btn-danger {
+	color: #fff;
+	background-color: #c70707;
+}
+
+.btn-info {
+	color: #fff;
+	background-color: #73a6d2;
+}
+
+.btn-warning {
+	color: #fff;
+	background-color: #f39c12;
+}
+.card-image, .card-content{
+    margin-top: 10px;
+}
+.modal{
+background-color: rgba(0,0,0,0) !important;
+ box-shadow: 0px !important;
+}
+
 </style>
-<div ng-controller="InspectionController">
-	<header id="header" class="page-topbar">
-		<div class="navbar-fixed">
-			<nav class="navbar-color">
-				<ul class="left text-center ">
-					<li style="font-size: 1.5em;padding: 0px 20px;">Eatsafe</li>
-				</ul>
-				<div class="nav-wrapper">
-					<!-- <div class="header-search-wrapper hide-on-med-and-down">
-              <input class="header-search-input z-depth-2" type="text" name="Search" placeholder="Search">
-            </div> -->
-				</div>
-			</nav>
-		</div>
-	</header>
-	<div class="col-md-3">
-		<div class="box box-primary">
-			<div class="box-header with-border">
-				<h3 class="box-title">CSV DROP ZONE</h3>
-			</div>
-			<div class="box-body">
+
+<div class="row" ng-controller="InspectionController">
+	<div class="col-sm-3 col-md-7 col-lg-3 mx-auto">
+		<div class="card card-signin my-5">
+			   <h5 class="card-title text-center">
+					Create Inspection
+				</h5>
+				<div class="card-body" style="    margin-top: -60px;">
+					<div class="box-body">
 				<strong><i class="fa fa-book margin-r-5"></i> Select
 					Information Type</strong> <select type="dataselect" name="dataselect"
 					ng-model="selectedOption" class="form-control"
@@ -208,21 +162,10 @@ input:checked+.slider:before {
 					<option value="establishment">Establishment</option>
 					<option value="inspection">Inspection</option>
 				</select>
-				<div class="upload-drop-zone" id="drop-zone" ng-model="files">Drop
-					CSV Files</div>
-			</div>
-			<div class="box-footer">
-				<div class="col-md-4">
-					<span class="badge"></span>
-				</div>
-			</div>
-		</div>
-		<div class="box box-primary">
-			<div class="box-header with-border">
-				<h3 class="box-title">Search Criteria</h3>
-			</div>
-			<div class="box-body">
-				<strong><i class="fa fa-book margin-r-5"></i> Select States</strong>
+			<!-- 	<div class="upload-drop-zone" id="drop-zone" ng-model="files">Drop
+					CSV Files</div> -->
+					
+					<strong><i class="fa fa-book margin-r-5"></i> Select States</strong>
 				<select type="select" id="stateselect" name="stateselect"
 					ng-model="selectedStateOption" class="form-control"
 					ng-change="getStateSelection(selectedStateOption)">
@@ -244,17 +187,23 @@ input:checked+.slider:before {
 				<a href="#" class="btn btn-primary btn-block"
 					ng-if="establishments.selected.id!=null"
 					ng-click="generateInspectionForm();"><b>GENERATE</b></a>
-
 			</div>
-			<!-- /.box-body -->
+			<div class="box-footer">
+				<div class="col-md-4">
+					<span class="badge"></span>
+				</div>
+			</div>
+				</div>
 		</div>
 	</div>
-	<div class="col-md-3">
-		<div class="box box-primary">
-			<div class="box-header with-border">
-				<h3 class="box-title">Establishment Details</h3>
-			</div>
-			<div class="box-body">
+	
+	<div class="col-sm-3 col-md-7 col-lg-3 mx-auto">
+		<div class="card card-signin my-5">
+			   <h5 class="card-title text-center">
+					Establishment Details
+				</h5>
+				<div class="card-body" style="    margin-top: -60px;">
+					<div class="box-body">
 				<strong><i class="fa fa-book margin-r-5"></i> Food Facility</strong>
 				<p class="help-block">{{establishments.selected.name}}</p>
 				<hr>
@@ -290,8 +239,87 @@ input:checked+.slider:before {
 				<p class="help-block">{{establishments.selected.typeDesc}}</p>
 				<hr>
 			</div>
+				<div class="box-footer"></div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-9 col-md-5 col-lg-6 mx-auto">
+		<div class="card card-signin my-5">
+			<h3 class="card-title text-center" style="font-size: 17px;">FOODBORNE ILLNESS RISK FACTORS AND PUBLIC HEALTH INTERVENTIONS</h3>
+					<a href class="btn btn-primary text-uppercase" data-toggle="modal" style="margin-left: 40px;"
+					ng-click="createNewInspectionRecord()"> <b>Add Criteria</b></a>
+					 <div class="pull-right btn-box-tool" >
+                           <a href class="btn-floating halfway-fab waves-effect waves-light green" 
+                           ng-click="inspectionFormData('ADD','NA', 0)" style="margin-right: 46px;">
+                 			 <i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i> <b>Add</b> </a>
+                          </div>
+			</div>
+			<div class="card-panel" style="  margin-top: -60px;">
+			<div class="box-body no-padding">
+				<div class="col-xs-12 col-md-12">
+				<div class="post" ng-repeat="(key,val) in complianceRecords.finalList" style="    background-color: #f5f5f5;
+    padding: 10px;">
+                  <div class="user-block">
+                        <span class="username" style=" margin-left: 0px;">
+                         <b>{{val.title}}</b>
+                          <div class="pull-right btn-box-tool" >
+                          <a href ng-click="inspectionFormData('UPDATE', val, key)" 
+							class="btn-floating halfway-fab waves-effect waves-light red">
+							<i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
+						 </a>
+                          </div>
+                           
+                        </span>
+                  </div>
+                   <div class="card blue-grey darken-1" style="background-color: #fff !important;">
+        		<div class="card-content white-text">
+                  <div ng-repeat="(k,v) in val.descriptions">
+                     <span class="username" style=" margin-left: 0px;color:#000">
+                          <span > {{v.text}}</span>
+                  		 <div class="pull-right btn-box-tool" style="margin-right: -20px;">
+                  		 <a href  ng-click="manageDescription('UPDATE', v,val,k)">
+							<i class="fa fa-pencil " aria-hidden="true"></i>
+						 </a>
+						 <a href   ng-click="manageDescription('DELETE', v,val,k)">
+							<i class="fa fa-trash " aria-hidden="true"></i>
+						 </a>
+                          </div>
+                    
+                  </span>
+					<table classs="table" style="margin-left: -20px;">
+						<tr>
+						<td style="text-align:center" ng-repeat="val2 in inspectionForm.checkedValue" ng-if="val2!='NO'">
+						{{val2}}
+						 <div class="switch">
+					  <label>
+					    <input type="checkbox" checked>
+					    <span class="lever"></span> 
+					  </label>
+					</div>
+					</td>
+					</tr>
+					</table>
+                  </div>
+                  <a href class="btn-floating halfway-fab waves-effect waves-light blue " style=" margin-right: -16px;"
+                   ng-click="manageDescription('ADD','NULL', val, rule )">
+                  <i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i></a>
+                  
+                  <a href class="btn-floating halfway-fab waves-effect waves-light orange pull-right" 
+                  style=" margin-right: -16px;" ng-click="inspectionFormData('DELETE', val, key)">
+                  <i class="fa fa-times-circle fa-2x" aria-hidden="true"></i></a>
+                </div>
+				</div>
+				</div>
+				</div>
+			</div>
+			
 			<div class="box-footer">
-				<div class="modal fade" id="inspectionModal" tabindex="-1"
+				<a href class="btn btn-primary" data-toggle="modal" ng-if="selectedOption=='inspection'"
+					ng-click="saveInspection()"><b>Save Inspection</b></a>
+			</div>
+			</div>
+		</div>
+			<div class="modal fade" id="inspectionModal" tabindex="-1"
 					role="dialog" aria-labelledby="exampleModalLabel"
 					aria-hidden="true">
 					<div class="modal-dialog" role="document">
@@ -400,82 +428,4 @@ input:checked+.slider:before {
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>
 	</div>
-	<div class="col-md-6">
-
-		<div class="box box-primary">
-			<div class="box-header with border">
-			<h3 class="box-title text-center" style="font-size: 17px;">FOODBORNE ILLNESS RISK FACTORS AND PUBLIC HEALTH INTERVENTIONS</h3>
-					<a href class="btn btn-primary" data-toggle="modal"
-					ng-click="createNewInspectionRecord()"><b>Create Inspection</b></a>
-					 <div class="pull-right btn-box-tool" >
-                           <a href class="btn btn-success" ng-click="inspectionFormData('ADD','NA', 0)">
-                 				  <i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i> <b>Add</b> </a>
-                          </div>
-			</div>
-			<div class="box-body no-padding">
-				<div class="col-xs-12 col-md-12">
-				<div class="post" ng-repeat="(key,val) in complianceRecords.finalList" style="    background-color: #f5f5f5;
-    padding: 10px;">
-                  <div class="user-block">
-                        <span class="username" style=" margin-left: 0px;">
-                         <!--  <span class="btn btn-small" style="background-color: #0c0d13;"></span>  -->
-                         {{val.title}}
-                          <div class="pull-right btn-box-tool" >
-                 			 <a href  ng-click="inspectionFormData('UPDATE', val, key)">
-                 				 <i class="fa fa-pencil-square fa-2x" aria-hidden="true"></i></a> 
-                           <!--  <a href  ng-click="updateInspectionRecord(rule)">
-                 				 <i class="fa fa-pencil-square fa-2x" aria-hidden="true"></i></a> -->
-                          </div>
-                           
-                        </span>
-                  </div>
-                   <div class="card blue-grey darken-1" style="background-color: #7fc5bf !important;">
-        		<div class="card-content white-text">
-                  <div ng-repeat="(k,v) in val.descriptions">
-                     <span class="username" style=" margin-left: 0px;">
-                          <span> {{v.text}}</span>
-                  		 <div class="pull-right btn-box-tool" style="margin-right: -20px;">
-                            <a href  ng-click="manageDescription('UPDATE', v,val,k)">
-                 	 		<i class="fa fa-pencil-square fa-2x" aria-hidden="true"></i></a>
-                 	 		 <a href  ng-click="manageDescription('DELETE', v,val,k)">
-                 	 		<i class="fa fa-trash fa-2x" aria-hidden="true"></i></a>
-                          </div>
-                    
-                  </a>
-                  </span>
-					<table classs="table" style="margin-left: -20px;">
-						<tr>
-						<td style="text-align:center" ng-repeat="val2 in inspectionForm.checkedValue" ng-if="val2!='NO'">
-						{{val2}}
-						 <div class="switch">
-					  <label>
-					    <input type="checkbox" checked>
-					    <span class="lever"></span> 
-					  </label>
-					</div>
-					</td>
-					</tr>
-					</table>
-                  </div>
-                  <a href class="btn btn-large " style="height: 32px; padding: 4px 12px; margin-right: -16px;"
-                   ng-click="manageDescription('ADD','NULL', val, rule )">
-                  <i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i></a>
-                  
-                  <a href class="btn btn-large pull-right" 
-                  style="height: 32px; padding: 4px 12px;   margin-right: -16px;" ng-click="inspectionFormData('DELETE', val, key)">
-                  <i class="fa fa-times-circle fa-2x" aria-hidden="true"></i></a>
-                </div>
-				</div>
-				</div>
-				</div>
-			</div>
-			<div class="box-footer">
-				<a href class="btn btn-primary" data-toggle="modal"
-					ng-click="saveInspection()"><b>Save Inspection</b></a>
-			</div>
-		</div>
-	</div>
-</div>

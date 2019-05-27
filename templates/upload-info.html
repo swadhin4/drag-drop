@@ -1,0 +1,278 @@
+<style>
+:root { -
+	-input-padding-x: 1.5rem; -
+	-input-padding-y: .75rem;
+}
+
+
+.card-signin {
+	border: 0;
+	border-radius: 0rem;
+	box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+}
+
+.card-signin .card-title {
+	margin-bottom: 2rem;
+	font-weight: 300;
+	font-size: 1.5rem;
+}
+
+.card-signin .card-body {
+	padding: 2rem;
+}
+
+.form-signin {
+	width: 100%;
+}
+
+.form-signin .btn {
+	font-size: 80%;
+	border-radius: 5rem;
+	letter-spacing: .1rem;
+	font-weight: bold;
+	padding: 1rem;
+	transition: all 0.2s;
+}
+
+.form-label-group {
+	position: relative;
+	margin-bottom: 1rem;
+}
+
+.form-label-group input {
+	height: auto;
+	/*  border-radius: 2rem; */
+	padding-top: 22px
+}
+
+/* .form-label-group>input,
+.form-label-group>label {
+  padding-left: 15px;
+  padding-right: 15px;
+} */
+.form-label-group>label {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: block;
+	width: 100%;
+	margin-bottom: 0;
+	/* Override default `<label>` margin */
+	line-height: 1.5;
+	color: #e4e8ec;
+	border: 1px solid transparent;
+	border-radius: .25rem;
+	transition: all .1s ease-in-out;
+}
+
+.form-label-group input::-webkit-input-placeholder {
+	color: transparent;
+}
+
+.form-label-group input:-ms-input-placeholder {
+	color: transparent;
+}
+
+.form-label-group input::-ms-input-placeholder {
+	color: transparent;
+}
+
+.form-label-group input::-moz-placeholder {
+	color: transparent;
+}
+
+.form-label-group input::placeholder {
+	color: transparent;
+}
+
+.btn-google {
+	color: white;
+	background-color: #ea4335;
+}
+
+.btn-facebook {
+	color: white;
+	background-color: #3b5998;
+}
+
+.btn, .btn-large, .btn-flat {
+	border: none;
+	border-radius: 2px;
+	display: inline-block;
+	height: 36px;
+	outline: 0;
+	padding: 0 2rem;
+	text-transform: uppercase;
+	vertical-align: middle;
+	-webkit-tap-highlight-color: transparent;
+}
+
+nav {
+	color: #444;
+	background-color: #fff;
+}
+
+.card {
+	border-radius: 0px;
+	    margin: 1.5rem 0 1rem 0;
+}
+
+.btn-success {
+	color: #fff;
+	background-color: #41b55f;
+}
+
+.btn-danger {
+	color: #fff;
+	background-color: #c70707;
+}
+
+.btn-info {
+	color: #fff;
+	background-color: #73a6d2;
+}
+
+.btn-warning {
+	color: #fff;
+	background-color: #f39c12;
+}
+.card-image, .card-content{
+    margin-top: 10px;
+}
+.modal{
+background-color: rgba(0,0,0,0) !important;
+ box-shadow: 0px !important;
+}
+
+</style>
+<div class="row" ng-controller="EstablishmentController">
+<div class="col-sm-3 col-md-7 col-lg-4 mx-auto" >
+	<div class="row">	
+	<div class="col-sm-3 col-md-7 col-lg-12 mx-auto">
+		<div class="card card-signin my-5">
+			   <h5 class="card-title text-center">
+					Upload Information
+				</h5>
+				<div class="card-body" style=" margin-top: -60px;">
+					<div class="box-body">
+				<strong><i class="fa fa-book margin-r-5"></i> Select
+					Information Type</strong> <select type="dataselect" name="dataselect"
+					ng-model="selectedOption" class="form-control"
+					ng-change="getOptionSelection(selectedOption)">
+					<option value="" selected>Choose your Option</option>
+					<option value="establishment">Establishment</option>
+					<option value="inspection">Inspection</option>
+				</select>
+				 <hr>
+				<div class="upload-drop-zone" id="drop-zone" ng-model="files">Drop CSV Files
+				</div>
+				
+			<strong><i class="fa fa-book margin-r-5"></i> 
+					Map Columns</strong>
+			<div class="row">		
+				<table class="table table-striped">
+					<tbody>
+						<tr><th>CSV Columns</th><th>DB Columns</th></tr>
+						<tr ng-repeat="(k,v) in csvData.header">
+							<td>{{v}}
+							</td>
+							<td>
+							<select name="csvSelect{{$index}}" id="csvSelect{{$index}}"  class="form-control" ng-click="getCurrentVal($index)"
+								ng-model="selectedMap[$index]" ng-change="populatedDataMap($index,selectedMap[$index], k,v)">
+							    <option value="">Select Column</option>
+								<option ng-repeat="val in dbColsArray"  value="{{val}}">
+           							{{val}}
+       							</option>
+							</select>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>	
+			</div>
+			<div class="box-footer">
+				<div class="col-md-4">
+					<span class="badge"></span>
+				</div>
+			</div>
+				</div>
+		</div>
+	</div>
+	</div>
+</div>
+	<div class="col-sm-9 col-md-5 col-lg-8 mx-auto">
+		<div class="card card-signin my-5">
+			<h5 class="card-title text-center">File
+				Content</h5>
+				<div class="card-body" style="margin-top: -60px;">
+				<div class="box-body">
+					<!-- 	<div class="col-md-8">
+						<input type="text" ng-model="search" class="form-control"
+							placeholder="Search by any column">
+						</div>
+						<div class="col-md-4">
+						<input type="number" min="1" max="{{csvData.rowObj.length}}"
+						class="form-control" ng-model="pageSize">
+						</div> -->
+					<div class="table-responsive" style="height: 380px">
+						<table class="table table-nowrap" cellpadding="10">
+							<tbody>
+								<tr style="display: none">
+									<th ng-repeat="(k,v) in csvData.header"
+										id="mappedCol{{$index}}"></th>
+								</tr>
+								<tr>
+									<th ng-repeat="(k,v) in csvData.header">{{v}}</th>
+								</tr>
+								<tr
+									dir-paginate="val in  csvData.rowObj | filter:search | itemsPerPage: pageSize"
+									current-page="currentPage">
+									<td ng-repeat="(k,v) in val.obj">{{v.v}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="box-footer clearfix"">
+					<div class="col-md-12">
+						<dir-pagination-controls boundary-links="true"
+							on-page-change="pageChangeHandler(newPageNumber)"
+							ng-if="csvData.rowObj.length>0">
+						<ul class="pagination" ng-if="1 < pages.length || !autoHide"
+							style="margin-top: 0.5rem;">
+							<li ng-if="boundaryLinks"
+								ng-class="{ disabled : pagination.current == 1 }"><a
+								href="" ng-click="setCurrent(1)">&laquo;</a></li>
+							<li ng-if="directionLinks"
+								ng-class="{ disabled : pagination.current == 1 }"><a
+								href="" ng-click="setCurrent(pagination.current - 1)">&lsaquo;</a>
+							</li>
+							<li
+								ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)"
+								ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }">
+								<a href="" ng-click="setCurrent(pageNumber)">{{ pageNumber
+									}}</a>
+							</li>
+
+							<li ng-if="directionLinks"
+								ng-class="{ disabled : pagination.current == pagination.last }">
+								<a href="" ng-click="setCurrent(pagination.current + 1)">&rsaquo;</a>
+							</li>
+							<li ng-if="boundaryLinks"
+								ng-class="{ disabled : pagination.current == pagination.last }">
+								<a href="" ng-click="setCurrent(pagination.last)">&raquo;</a>
+							</li>
+						</ul>
+						</dir-pagination-controls>
+					</div>
+					<div class="col-md-12">
+						<a href class="btn btn-primary btn-block"
+							ng-if="csvData.records>0">Total Records: {{csvData.records}}</a>
+						<a href class="btn btn-primary btn-block"
+							ng-if="csvData.records==0">No Records available</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

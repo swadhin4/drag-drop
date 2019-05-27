@@ -250,4 +250,21 @@ function DataService(config, api, $http,$q) {
 		return def.promise;
     };
     
+    this.getInspectionForm = function(){
+			var formTemplate =    [{
+			    	title:"",
+			    	description:[
+			    		  {
+			    			  index:null,
+			    			  type:"IN",
+			    			  value:"",
+			    			  cos:"",
+			    			  rv:"",
+			    		  }  
+			       ]
+			    }]
+			var def = $q.defer();
+			def.resolve(formTemplate);
+			return def.promise;
+    }
 }  

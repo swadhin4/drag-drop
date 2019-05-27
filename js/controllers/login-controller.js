@@ -24,6 +24,9 @@ function LoginController($scope,$state,$rootScope) {
 		$state.go('est', $state.current, {}, {reload: true});
 	}	
     
+	$scope.addBusinsess=function(){
+		$state.go('businessinfo', $state.current, {}, {reload: true});
+	}
     //-- Settings Codes---
     $scope.navBarEnabled =true;
 

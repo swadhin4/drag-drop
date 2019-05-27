@@ -1,10 +1,23 @@
 var eatSafeModule = angular.module('eatSafeApp');
 eatSafeModule.service('eatSafeService', ['config','api','$http', '$q', EatSafeService]);
 
+
 function EatSafeService(config, api, $http,$q) {
 	 var transform = function(data) {
 	        return $.param(data);
 	    };
+	    
+		this.getMyLocation = function(Lat, Lng){
+			var def = $q.defer();
+		    $http.get(api.getMyLocation+"?q="+Lat+"+"+Lng+"&key=36bbd8aca3c54b438392b7e18dcb1c1f").success(function(data) {
+				def.resolve(data);
+			})
+			.error(function(data) {
+				console.log(data)
+				def.reject(data);
+			});
+			return def.promise;
+	    };   
 	this.saveCsvData = function(csvData, type){
 		console.log("Inside Save CSV Data "+ new Date())
 		var def = $q.defer();
@@ -55,6 +68,35 @@ function EatSafeService(config, api, $http,$q) {
 		return def.promise;
     }
     
+    this.saveInspectionForm=function(inspectionFormData){
+    	var def = $q.defer();
+    	$http.post(api.saveInspectionForm,inspectionFormData).success(function(data) {
+			def.resolve(data);
+		})
+		.error(function(data) {
+			console.log(data)
+			def.reject(data);
+		});
+		return def.promise;
+    }
+    
+    this.createInspectionForm=function(){
+    	var inspectionFormTemplate=[{
+    		title:"",
+    		description:[
+    			  {
+    				  index:null,
+    				  type:"IN",
+    				  value:"",
+    				  cos:"",
+    				  rv:"",
+    			  }  
+    	   ]
+    	}];
+    	var def = $q.defer();
+		def.resolve(inspectionFormTemplate);
+		return def.promise;
+    }
     
     this.getInspectionRules=function(){
     	var rules=[{
@@ -62,7 +104,8 @@ function EatSafeService(config, api, $http,$q) {
     		values:[
     				  {
     					  index:1,
-    					  row:"Certification by accredited program, compliance with Code,or correct responses"
+    					  row:"Certification by accredited program, compliance with Code,or correct responses",
+    					  
     				  }  
     		     ]
     		},

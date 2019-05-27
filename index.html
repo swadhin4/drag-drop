@@ -7,9 +7,7 @@
 <link rel="stylesheet" type="text/css"	href="components/bootstrap/dist/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" 	href="components/font-awesome/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css"	href="css/app.css">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/4.0.2/bootstrap-material-design.css" rel="stylesheet">
-<link href="https://ducthanhnguyen.github.io/MaterialAdminLTE/dist/css/MaterialAdminLTE.min.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css"	href="css/AdminLTE.min.css">
+<!-- <link rel="stylesheet" type="text/css"	href="css/AdminLTE.min.css"> -->
 <link href="css/materialize.min.css" rel="stylesheet">
 <script type="text/javascript" src="components/jquery/dist/jQuery-2.1.4.min.js"></script>
 <script type="text/javascript" src="components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -22,6 +20,7 @@
 <script type="text/javascript" src="js/app.js"></script>
 <script type="text/javascript" src="js/controllers/master-ctrl.js"></script>
 <script type="text/javascript" src="js/controllers/login-controller.js"></script>
+<script type="text/javascript" src="js/controllers/location-controller.js"></script>
 <script type="text/javascript" src="js/controllers/establishment-controller.js"></script>
 <script type="text/javascript" src="js/controllers/inspection-controller.js"></script>
 <script type="text/javascript" src="js/services/csv-service.js"></script>
@@ -36,22 +35,75 @@
 		background-size: cover;  
    }
    .box{
-   	background-color: #f3f6f9ba;
+   	background-color: #fff;
    }
+    .col-md-3, .col-md-4, .col-md-6,.col-md-8,.col-md-9 .col-md-12{
+   padding-right: 0px !important;
+   padding-left: 0px !important; 
+   }
+   .btn{
+   border-radius:23px !important;
+   }
+   
+ footer.page-footer {
+    margin-top: 0px;
+    padding-top: 0px;
+    background-color: #00bcd4;
+}
+.navbar{
+margin-bottom: 0px;
+}
+.row{
+margin-bottom: 0px;
+}
+nav ul a {
+    font-size: 1rem;
+    color: #924d4d;
+    display: block;
+    padding: 0 18px;
+}
+.card-title{
+padding: 18px;
+}
+
 </style>
 </head>
 <body >
-  <div id="page-wrapper" ng-class="{'open': toggle}" ng-cloak>
-    <!-- Sidebar -->
-    <!-- End Sidebar -->
-    <div id="content-wrapper">
-      <div class="page-content">
-        <!-- Header Bar -->
-        <!-- End Header Bar -->
-        <!-- Main Content -->
+  
+  <nav class="navbar navbar-dark primary-color">
+  <div class="col-md-12">
+		<div class="col-sm-4 col-md-6 col-lg-4 mx-auto">
+			<a class="navbar-brand" href="#/"> <img src="img/food-safety.png"
+				style="height: 66px; margin-top: -20px;margin-left: 24px;" alt="mdb logo">
+			</a> <a class="navbar-brand" href="#/"> <img src="img/eatsafe.png"
+				style="height: 50px; margin-top: -10px;" alt="mdb logo">
+			</a>
+		</div>
+		
+		<div class="col-sm-8 col-md-6 col-lg-8 mx-auto">
+			  <div class="nav-wrapper">
+      <ul class="right hide-on-med-and-down">
+        <li><a href="#/inspection">Health Inspections</a></li>
+        <li><a href="#/est">Food Establishments</a></li>
+        <li><a href="#/">Food Supply</a></li>
+        <li><a href="#/">Food Safety</a></li>
+        <li><a href="#/">About</a></li>
+        <li><a href="#/signup">Sign In</a></li>
+      </ul>
+    </div>
+		</div>
+		</div>
+
+	</nav>
         <div ui-view id="homeview"></div>
-      </div><!-- End Page Content -->
-    </div><!-- End Content Wrapper -->
-  </div><!-- End Page Wrapper -->
+        <footer class="page-footer">
+          <div class="footer-copyright">
+            <div class="container">
+            © 2014 Copyright Text
+            <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+            </div>
+          </div>
+        </footer>
+ 
 </body>
 </html>

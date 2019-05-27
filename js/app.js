@@ -21,7 +21,15 @@ eatSafeModule.config(['$stateProvider', '$urlRouterProvider',
         $stateProvider
             .state('index', {
                 url: '/',
-                templateUrl: 'templates/login.html'
+                templateUrl: 'templates/landing.html'
+            })
+            .state('signup', {
+                url: '/signup',
+                templateUrl: 'templates/signup.html'
+            })
+             .state('businessinfo', {
+                url: '/business/info',
+                templateUrl: 'templates/establishment-info.html'
             })
             /*.state('sidemenu',{
 			  url:'/sidemenu',
@@ -40,11 +48,11 @@ eatSafeModule.config(['$stateProvider', '$urlRouterProvider',
 			 })*/
             .state('est', {
                 url: '/est',
-                templateUrl: 'templates/establishment.html'
+                templateUrl: 'templates/upload-info.html'
             })
             .state('inspection', {
                 url: '/inspection',
-                templateUrl: 'templates/inspection-form.html'
+                templateUrl: 'templates/inspection-info.html'
             });
     }
 ]);
