@@ -70,7 +70,11 @@ function InspectionController($scope,$state, eatSafeService, dataService) {
 			$state.go('est', $state.current, {}, {reload: true});
 		}else{
 			$scope.getUSStates();
+<<<<<<< HEAD
 			$scope.getInspectionForm();
+=======
+			 $scope.getInspectionForm();
+>>>>>>> 866ea1c39be521b9478061afc8ce105cccdf0e1d
 		}
 	}
     
@@ -83,6 +87,10 @@ function InspectionController($scope,$state, eatSafeService, dataService) {
     	$.each($scope.establishments.list,function(k,v){
     		if(parseInt(optionSelected) == v.id){
     			$scope.establishments.selected=v;
+<<<<<<< HEAD
+=======
+    			// $scope.getInspectionForm();
+>>>>>>> 866ea1c39be521b9478061afc8ce105cccdf0e1d
     			return false;
     		}
     	});
@@ -216,6 +224,7 @@ function InspectionController($scope,$state, eatSafeService, dataService) {
     		$scope.complianceRecords.finalList=filtered;
     	}
     }
+<<<<<<< HEAD
     $scope.saveAndGenerateFormData=function(){
     	if($scope.complianceData.id==null){
     		var recordData={
@@ -343,3 +352,6 @@ function InspectionController($scope,$state, eatSafeService, dataService) {
     }
    
 }
+=======
+}
+>>>>>>> 866ea1c39be521b9478061afc8ce105cccdf0e1d
